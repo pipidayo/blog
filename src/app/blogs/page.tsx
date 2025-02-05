@@ -32,7 +32,8 @@ export default async function StaticPage() {
               <h4 className='text-xl font-semibold mb-2'>{blog.title}</h4>
               {/* 必要に応じて日付や抜粋を追加 */}
               <p className='text-gray-600 dark:text-gray-300 text-sm'>
-                {new Date(blog.publishedAt).toLocaleDateString('ja-JP')}
+                {blog.publishedAt &&
+                  new Date(blog.publishedAt).toLocaleDateString('ja-JP')}
               </p>
             </div>
             <Link href={`/blogs/${blog.id}`}>
