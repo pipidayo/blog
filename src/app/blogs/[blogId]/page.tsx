@@ -1,18 +1,19 @@
 import { Metadata } from 'next'
 
-type Props = {
-  params: {
-    blogId: string
-  }
+type GenerateMetadata = {
+  params: { blogId: string }
+  searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: GenerateMetadata): Promise<Metadata> {
   return {
     title: `Blog ${params.blogId}`,
   }
 }
 
-export default function BlogPage({ params }: Props) {
+export default function BlogPage({ params }: { params: { blogId: string } }) {
   const { blogId } = params
 
   return (
