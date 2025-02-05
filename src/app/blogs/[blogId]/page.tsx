@@ -1,24 +1,31 @@
-import { Metadata } from 'next'
+import { getDetail, getBlogs } from '@/app/libs/client'
 
-type GenerateMetadata = {
+export async function generateStaticParams() {
+  const { contents } = await getBlogs()
+
+  const paths = contents.map((blog) => {
+    return {
+      blogId: blog.id,
+    }
+  })
+  return [...paths]
+}
+
+export default async function StaticDetailPage({
+  params: { blogId },
+}: {
   params: { blogId: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
-
-export async function generateMetadata({
-  params,
-}: GenerateMetadata): Promise<Metadata> {
-  return {
-    title: `Blog ${params.blogId}`,
-  }
-}
-
-export default function BlogPage({ params }: { params: { blogId: string } }) {
-  const { blogId } = params
+}) {
+  const blog = await getDetail(blogId)
 
   return (
-    <div>
-      <h1>Blog {blogId}</h1>
-    </div>
+    <>
+      <p>{blog.title}</p>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: `${blog.body}`,
+        }}
+      />
+    </>
   )
 }
